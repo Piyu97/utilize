@@ -1,4 +1,4 @@
-import { STORE_DATA,NO_DATA,LOADING } from "./action_types"
+import { STORE_DATA, NO_DATA, LOADING, DEL } from "./action_types"
 import axios from "axios";
 
 const loading = () => {
@@ -10,26 +10,34 @@ const loading = () => {
 const storeData = (payload) => {
     console.log(payload)
     return {
-        type:STORE_DATA,
-        payload:payload
+        type: STORE_DATA,
+        payload: payload
     }
 
 }
- const noData = () => {
+const noData = () => {
     return {
-        type:NO_DATA,
+        type: NO_DATA,
     }
 }
 
-const getData=()=>{
-    return async dispatch=>{
-          dispatch(loading())
-          return  await axios({
+const del = (idx) => {
+    return {
+        type: DEL,
+        payload: idx
+    }
+}
+const getData = () => {
+    return async dispatch => {
+        dispatch(loading())
+        return await axios({
             method: 'get',
             url: "http://www.json-generator.com/api/json/get/clwRkuBmKW?indent=2",
         })
-        .then(res=>dispatch(storeData(res)))
-        .catch(err=>dispatch(noData()))          
+            .then(res => dispatch(storeData(res)))
+            .catch(err => dispatch(noData()))
     }
 }
-export {getData,loading,storeData,noData}
+
+
+export { getData, loading, storeData, noData, del }
