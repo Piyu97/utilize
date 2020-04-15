@@ -7,8 +7,9 @@ class DashBoard extends React.Component {
         super(props)
     }
     componentDidMount =  () => {
-        if (this.props.prod == null) {
-            this.props.getData()
+        let {prod,getData}=this.props
+        if (prod == null) {
+            getData()
         }
     }
     render() {

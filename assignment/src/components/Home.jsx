@@ -87,9 +87,6 @@ class Home extends React.Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.loading,
-    prod: state.secondaryData,
-    perPage:state.perPage,
-    activePage:state.activePage,
     delValue:state.delValue
 })
 
