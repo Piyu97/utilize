@@ -68,6 +68,7 @@ class Home extends React.Component {
         const { loading, prod } = this.props
         return (
             <div>
+            <button className="btn btn-secondary m-3" onClick={()=>this.props.history.goBack()}>GO BACK</button>
                 {
                     loading ? (
                         <React.Fragment >

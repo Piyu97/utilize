@@ -1,9 +1,9 @@
 import { STORE_DATA, NO_DATA, LOADING, DEL, UPDATE, ADD, FILTERING, SORTING } from "./action_types"
 
 const initialState = {
-    database: [],
+    database: JSON.parse(sessionStorage.getItem("database")),
     loading: false,
-    secondaryData: []
+    secondaryData: JSON.parse(sessionStorage.getItem("database")),
 }
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +14,7 @@ const reducer = (state = initialState, action) => {
                 loading: true
             }
         case STORE_DATA:
+            sessionStorage.setItem("database",JSON.stringify(action.payload.data))
             return {
                 ...state,
                 loading: false,

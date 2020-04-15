@@ -5,32 +5,24 @@ import { getData } from "../redux/action"
 class DashBoard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            getValues: 1
-        }
     }
-    componentDidMount = () => {
-        alert(this.state.getValues)
-        if (this.state.getValues) {
+    componentDidMount = async () => {
+        if (this.props.prod == null) {
             this.props.getData()
-            this.setState({
-                getValues: 0
-            })
-            alert(this.state.getValues)
         }
     }
     render() {
         return (
             <React.Fragment>
-                <div>
-                    <h1 className="mx-auto my-auto">UTILIZE APP</h1>
-                </div>
+                    <button className="btn btn-secondary m-3" onClick={()=>this.props.history.goBack()}>GO BACK</button>
+                    <h1 className="text-center my-auto">UTILIZE APP</h1>
+                    <h5 className="text-center  my-4">Click on the home Button</h5>
             </React.Fragment>
         )
     }
 }
 const mapStateToProps = (state) => ({
-
+    prod: state.database
 })
 
 const mapDispatchToProps = dispatch => {
