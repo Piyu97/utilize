@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux"
-import { del, add } from "../redux/action"
+import { del, add, filtering, sorting } from "../redux/action"
 import { Link } from "react-router-dom"
 import Notification from "./Notification"
 
@@ -13,7 +13,8 @@ class Home extends React.Component {
             customer_email: "",
             product: "",
             quantity: 0,
-            delete: 0
+            delete: 0,
+            update: 0
         }
     }
 
@@ -42,7 +43,18 @@ class Home extends React.Component {
             [e.target.name]: e.target.value
         })
     }
+    // function to handle filter
+    handleProduct = (e) => {
+        this.props.filtering(e.target.value)
+    }
+    // function to handle the sorting
+    handleSort = (e) => {
+        this.props.sorting(e.target.value)
+        this.setState({
+            update: !this.state.update
+        })
 
+    }
     // adding a new order
     handleClick = () => {
         let order = this.state
@@ -70,8 +82,21 @@ class Home extends React.Component {
 
                                 <h5 class="text-center my-2">Click on<button type="button" class="btn mx-1" data-toggle="modal" data-target="#exampleModalCenter">
                                     <i style={{ "font-size": "36px", "color": "red" }}>+</i>
-                                </button> to add another Tasklist</h5>
-
+                                </button> to add another Order</h5>
+                                <div className="d-flex justify-content-center">
+                                    <div className="mx-auto">
+                                        <select onChange={this.handleProduct}>
+                                            <option value="default">Filter by product</option>
+                                            <option value="Product 1">Product 1</option>
+                                            <option value="Product 2">Product 2</option>
+                                            <option value="Product 3">Product 3</option>
+                                        </select>
+                                        <select onChange={this.handleSort} className="mx-2">
+                                            <option value="default">Sort by name</option>
+                                            <option value="asc">A->Z</option>
+                                            <option value="desc">Z->A</option>
+                                        </select>
+                                    </div></div>
                                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -84,28 +109,31 @@ class Home extends React.Component {
                                             <div class="modal-body ">
                                                 <div className="d-flex justify-content-center">
                                                     <div className="mx-auto">
-                                                        <div>Order id</div><br></br>
-                                                        <input type="text" name="id" onChange={this.handleChange} /><br></br>
-                                                        <div>Product</div><br></br>
-                                                        <input type="text" name="product" onChange={this.handleChange} /><br></br>
-                                                        <div>Email</div><br></br>
-                                                        <input type="text" name="customer_email" onChange={this.handleChange} /><br></br>
-                                                        <div>Name</div><br></br>
-                                                        <input type="text" name="customer_name" onChange={this.handleChange} /><br></br>
-                                                        <div>Quantity</div><br></br>
-                                                        <input type="text" name="quantity" onChange={this.handleChange} /><br></br>
+                                                        <form>
+                                                            <div>Order id</div><br></br>
+                                                            <input type="text" name="id" onChange={this.handleChange} required /><br></br>
+                                                            <div>Product</div><br></br>
+                                                            <input type="text" name="product" onChange={this.handleChange} required /><br></br>
+                                                            <div>Email</div><br></br>
+                                                            <input type="text" name="customer_email" onChange={this.handleChange} /><br></br>
+                                                            <div>Name</div><br></br>
+                                                            <input type="text" name="customer_name" onChange={this.handleChange} /><br></br>
+                                                            <div>Quantity</div><br></br>
+                                                            <input type="text" name="quantity" onChange={this.handleChange} /><br></br>
+                                                            <button type="reset" className="btn btn-info mx-auto mt-3">Reset</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.handleClick}>Save changes</button>
+                                                <button type="button" class="btn btn-success" data-dismiss="modal" onClick={this.handleClick}>Save changes</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive mt-5">
-                                    <table class="table">
+                                    <table class="table table-striped table-bordered table-hover">
                                         <thead className="bg-dark text-white">
                                             <tr>
                                                 <td>SI.NO</td>
@@ -148,7 +176,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => {
     return ({
         del: (idx) => dispatch(del(idx)),
-        add: (payload) => dispatch(add(payload))
+        add: (payload) => dispatch(add(payload)),
+        filtering: (payload) => dispatch(filtering(payload)),
+        sorting: (payload) => dispatch(sorting(payload)),
     })
 }
 

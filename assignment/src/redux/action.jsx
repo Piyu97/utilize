@@ -1,4 +1,4 @@
-import { STORE_DATA, NO_DATA, LOADING, DEL,UPDATE ,ADD} from "./action_types"
+import { STORE_DATA, NO_DATA, LOADING, DEL,UPDATE ,ADD,FILTERING,SORTING} from "./action_types"
 import axios from "axios";
 
 const loading = () => {
@@ -39,6 +39,18 @@ const add = (payload) => {
         payload
     }
 }
+const filtering = (payload) => {
+    return {
+        type:FILTERING,
+        payload
+    }
+}
+const sorting = (payload) => {
+    return {
+        type:SORTING,
+        payload
+    }
+}
 const getData = () => {
     return async dispatch => {
         dispatch(loading())
@@ -52,4 +64,4 @@ const getData = () => {
 }
 
 
-export { getData, loading, storeData, noData, del,update,add }
+export { getData, loading, storeData, noData, del,update,add, filtering,sorting }

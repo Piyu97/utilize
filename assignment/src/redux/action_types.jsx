@@ -4,4 +4,6 @@ export const LOADING="LOADING";
 export const DEL="DEL";
 export const UPDATE="UPDATE";
 export const ADD="ADD";
+export const FILTERING="FILTERING";
+export const SORTING="SORTING";
 
