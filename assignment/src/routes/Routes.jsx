@@ -6,6 +6,7 @@ import NotFound from "../components/NotFound"
 import Trial from "../components/Trial"
 import Update from "../components/Update"
 import Home from "../components/Home"
+
 function Routes() {
     return (
         <React.Fragment>

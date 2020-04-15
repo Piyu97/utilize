@@ -17,6 +17,7 @@
 <button type="button" class="btn mx-1" data-toggle="modal" data-target="#exampleModalCenter">
         <i class="fa fa-plus" style={{ "font-size": "36px", "color": "red" }}></i>
     </button> to add another Tasklist</h5>
+    
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

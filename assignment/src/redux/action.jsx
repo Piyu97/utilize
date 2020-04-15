@@ -1,4 +1,4 @@
-import { STORE_DATA, NO_DATA, LOADING, DEL } from "./action_types"
+import { STORE_DATA, NO_DATA, LOADING, DEL,UPDATE ,ADD} from "./action_types"
 import axios from "axios";
 
 const loading = () => {
@@ -27,6 +27,18 @@ const del = (idx) => {
         payload: idx
     }
 }
+const update = (payload) => {
+    return {
+        type: UPDATE,
+        payload
+    }
+}
+const add = (payload) => {
+    return {
+        type:ADD,
+        payload
+    }
+}
 const getData = () => {
     return async dispatch => {
         dispatch(loading())
@@ -40,4 +52,4 @@ const getData = () => {
 }
 
 
-export { getData, loading, storeData, noData, del }
+export { getData, loading, storeData, noData, del,update,add }
