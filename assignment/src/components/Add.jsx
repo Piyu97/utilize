@@ -69,14 +69,11 @@ class Add extends React.Component {
         )
     }
 }
-const mapStateToProps = (state) => ({
-
-})
 
 const mapDispatchToProps = dispatch => {
     return ({
         add: (payload) => dispatch(add(payload)),
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Add)
+export default connect(null, mapDispatchToProps)(Add)
 
