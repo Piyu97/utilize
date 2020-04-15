@@ -6,7 +6,7 @@ class DashBoard extends React.Component {
     constructor(props) {
         super(props)
     }
-    componentDidMount = async () => {
+    componentDidMount =  () => {
         if (this.props.prod == null) {
             this.props.getData()
         }
