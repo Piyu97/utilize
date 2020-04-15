@@ -15,7 +15,7 @@ class DashBoard extends React.Component {
         return (
             <React.Fragment>
                     <button className="btn btn-secondary m-3" onClick={()=>this.props.history.goBack()}>GO BACK</button>
-                    <h1 className="text-center my-auto">UTILIZE APP</h1>
+                    <h1 className="text-center my-auto">ASSIGNMENT</h1>
                     <h5 className="text-center  my-4">Click on the home Button</h5>
             </React.Fragment>
         )

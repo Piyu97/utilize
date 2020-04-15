@@ -10,8 +10,8 @@ class Navbar extends React.Component {
         return (
             <React.Fragment>
                 <nav class="navbar navbar-dark bg-dark">
-                    <div><button class="btn btn-outline-primary"><Link to="/home" style={{ "color": "white", "textDecoration": "none" }}><h6></h6>Home</Link></button></div>
-                    <h6 style={{ "color": "white" }}><Link to="/login" style={{ "color": "white", "textDecoration": "none" }}><span class=" lead ">UTILIZE</span></Link></h6>
+                    <div><button className="btn btn-outline-primary"><Link to="/home" style={{ "color": "white", "textDecoration": "none" }}><h6></h6>Home</Link></button></div>
+                    <h6 style={{ "color": "white" }}><Link to="/login" style={{ "color": "white", "textDecoration": "none" }}><span className=" lead ">UTILIZE</span></Link></h6>
                 </nav>
             </React.Fragment>
         )
