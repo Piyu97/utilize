@@ -1,47 +1,22 @@
 import React from 'react'
 import { connect } from "react-redux"
-import { del, add, filtering, sorting } from "../redux/action"
+import { del, add, filtering, sorting, changePerPage } from "../redux/action"
 import { Link } from "react-router-dom"
 import Notification from "./Notification"
-
+import Pagination from "./Pagination"
+import Table from "./Table"
+import Add from "./Add"
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            id: 0,
-            customer_name: "",
-            customer_email: "",
-            product: "",
-            quantity: 0,
             delete: 0,
             update: 0
         }
     }
-
-    // function performing the delete operation
-    handleDelete = (idx) => {
-        var res = window.confirm("Are you sure, To delete the item");
-        if (res != true) {
-            alert("You have Canceled Delete operation")
-        } else {
-            this.props.del(idx)
-            setTimeout(() => {
-                this.setState({
-                    delete: 1
-                })
-            }, 3000)
-            this.setState({
-                delete: 0
-            })
-
-
-        }
-    }
-    // setting the state values
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    
+    componentDidMount = () => {
+        this.props.changePerPage(this.props.perPage)
     }
     // function to handle filter
     handleProduct = (e) => {
@@ -55,33 +30,33 @@ class Home extends React.Component {
         })
 
     }
-    // adding a new order
-    handleClick = () => {
-        let order = this.state
-        let newOrder = { "id": order.id, "customer_name": order.customer_name, "product": order.product, "customer_email": order.customer_email, "quantity": order.quantity }
-        this.props.add(newOrder)
-        alert(" New order has been added successfully !!")
+    handlePerPage = (e) => {
+        this.props.changePerPage(e.target.value)
     }
-
-
     render() {
-        const { loading, prod } = this.props
+        const { loading, delValue} = this.props
         return (
             <div>
-            <button className="btn btn-secondary m-3" onClick={()=>this.props.history.goBack()}>GO BACK</button>
+                <button className="btn btn-secondary m-3" onClick={() => this.props.history.goBack()}>GO BACK</button>
                 {
                     loading ? (
                         <React.Fragment >
-                            <div class="d-flex justify-content-center mt-5">
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only">Loading...</span>
+                            <div className="d-flex justify-content-center mt-5">
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
                         </React.Fragment >
                     ) : (
                             <React.Fragment>
-
-                                <h5 class="text-center my-2">Click on<button type="button" class="btn mx-1" data-toggle="modal" data-target="#exampleModalCenter">
+                                <select onChange={this.handlePerPage}>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <br></br>
+                                <h5 className="text-center my-2">Click on<button type="button" className="btn mx-1" data-toggle="modal" data-target="#exampleModalCenter">
                                     <i style={{ "font-size": "36px", "color": "red" }}>+</i>
                                 </button> to add another Order</h5>
                                 <div className="d-flex justify-content-center">
@@ -98,70 +73,11 @@ class Home extends React.Component {
                                             <option value="desc">Z->A</option>
                                         </select>
                                     </div></div>
-                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Add A Order</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body ">
-                                                <div className="d-flex justify-content-center">
-                                                    <div className="mx-auto">
-                                                        <form>
-                                                            <div>Order id</div><br></br>
-                                                            <input type="text" name="id" onChange={this.handleChange} required /><br></br>
-                                                            <div>Product</div><br></br>
-                                                            <input type="text" name="product" onChange={this.handleChange} required /><br></br>
-                                                            <div>Email</div><br></br>
-                                                            <input type="text" name="customer_email" onChange={this.handleChange} /><br></br>
-                                                            <div>Name</div><br></br>
-                                                            <input type="text" name="customer_name" onChange={this.handleChange} /><br></br>
-                                                            <div>Quantity</div><br></br>
-                                                            <input type="text" name="quantity" onChange={this.handleChange} /><br></br>
-                                                            <button type="reset" className="btn btn-info mx-auto mt-3">Reset</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" data-dismiss="modal" onClick={this.handleClick}>Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive mt-5">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead className="bg-dark text-white">
-                                            <tr>
-                                                <td>SI.NO</td>
-                                                <td>Customer_email</td>
-                                                <td>Customer_Name</td>
-                                                <td>Product</td>
-                                                <td>Quantity</td>
-                                                <td>Update</td>
-                                                <td>Delete</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {prod && prod.map((item, idx) =>
-                                                <tr key={item.id}>
-                                                    <td>{idx}</td>
-                                                    <td>{item.customer_email}</td>
-                                                    <td>{item.customer_name}</td>
-                                                    <td>{item.product}</td>
-                                                    <td>{item.quantity}</td>
-                                                    <td><button className="btn btn-warning"><Link to={`/update/${item.id}`}>Update</Link></button></td>
-                                                    <td><button className="btn btn-danger text-white" onClick={() => this.handleDelete(item.id)}>Delete</button></td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                {this.state.delete == 1 ? <Notification /> : <div></div>}
+                                <Add></Add>
+                                <br></br>
+                                <Pagination></Pagination>
+                                <Table></Table>
+                                {delValue==1? <Notification/>:null }
                             </React.Fragment>
                         )
                 }
@@ -171,7 +87,10 @@ class Home extends React.Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.loading,
-    prod: state.secondaryData
+    prod: state.secondaryData,
+    perPage:state.perPage,
+    activePage:state.activePage,
+    delValue:state.delValue
 })
 
 const mapDispatchToProps = dispatch => {
@@ -180,6 +99,7 @@ const mapDispatchToProps = dispatch => {
         add: (payload) => dispatch(add(payload)),
         filtering: (payload) => dispatch(filtering(payload)),
         sorting: (payload) => dispatch(sorting(payload)),
+        changePerPage: (payload) => dispatch(changePerPage(payload)),
     })
 }
 

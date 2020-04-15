@@ -1,9 +1,25 @@
-import { STORE_DATA, NO_DATA, LOADING, DEL, UPDATE, ADD, FILTERING, SORTING } from "./action_types"
+import {
+    STORE_DATA,
+    NO_DATA,
+    LOADING,
+    DEL,
+    UPDATE,
+    ADD,
+    FILTERING,
+    SORTING,
+    CHANGE_PER_PAGE,
+    CHANGE_ACTIVE_PAGE,
+    CHANGE_DEL_VALUE
+} from "./action_types"
 
 const initialState = {
     database: JSON.parse(sessionStorage.getItem("database")),
     loading: false,
     secondaryData: JSON.parse(sessionStorage.getItem("database")),
+    activePage: 1,
+    totalPages: 1,
+    perPage: 10,
+    delValue: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -14,7 +30,7 @@ const reducer = (state = initialState, action) => {
                 loading: true
             }
         case STORE_DATA:
-            sessionStorage.setItem("database",JSON.stringify(action.payload.data))
+            sessionStorage.setItem("database", JSON.stringify(action.payload.data))
             return {
                 ...state,
                 loading: false,
@@ -54,24 +70,25 @@ const reducer = (state = initialState, action) => {
                     secondaryData: state.database
                 }
             }
-            else if(action.payload=="asc"){
+            else if (action.payload == "asc") {
                 return {
                     ...state,
                     loading: false,
-                    secondaryData: state.secondaryData.sort((a,b)=>(a.customer_name>b.customer_name)?1:-1)
+                    secondaryData: state.secondaryData.sort((a, b) => (a.customer_name > b.customer_name) ? 1 : -1)
                 }
             }
-            else{
+            else {
                 return {
                     ...state,
                     loading: false,
-                    secondaryData: state.secondaryData.sort((a,b)=>(b.customer_name>a.customer_name)?1:-1)
+                    secondaryData: state.secondaryData.sort((a, b) => (b.customer_name > a.customer_name) ? 1 : -1)
                 }
             }
         case DEL:
             return {
                 ...state,
                 loading: false,
+                delValue: 1,
                 database: state.database.filter((item) => (item.id).toString() != (action.payload.toString())),
                 secondaryData: state.secondaryData.filter((item) => (item.id).toString() != (action.payload.toString()))
 
@@ -83,6 +100,25 @@ const reducer = (state = initialState, action) => {
                 database: state.database.map((item) => (item.id).toString() == (action.payload.id.toString()) ? action.payload : item),
                 secondaryData: state.secondaryData.map((item) => (item.id).toString() == (action.payload.id.toString()) ? action.payload : item)
 
+            }
+        case CHANGE_PER_PAGE:
+            return {
+                ...state,
+                loading: false,
+                totalPages: Math.floor(state.database.length / action.payload),
+                perPage: Number(action.payload)
+            }
+        case CHANGE_ACTIVE_PAGE:
+            return {
+                ...state,
+                loading: false,
+                activePage: Number(action.payload)
+            }
+        case CHANGE_DEL_VALUE:
+            return {
+                ...state,
+                loading: false,
+                delValue: 0
             }
         default:
             return state
